@@ -61,7 +61,6 @@ try
     }
 
     app.UseMiddleware<FoodSafetyTracker.Web.Middleware.ExceptionHandlingMiddleware>();
-    .Enrich.WithProperty("Application", "FoodSafetyTracker")
     app.UseSerilogRequestLogging(); // Log all HTTP requests
     app.UseRouting();
 
