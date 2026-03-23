@@ -23,11 +23,27 @@ namespace FoodSafetyTracker.Web.Data
             }
 
             // Seed Admin user
-            if (await userManager.FindByEmailAsync("admin@food.ie") == null)
+            if (await userManager.FindByEmailAsync("assignment@dorset.ie") == null)
             {
-                var admin = new IdentityUser { UserName = "admin@food.ie", Email = "admin@food.ie", EmailConfirmed = true };
-                await userManager.CreateAsync(admin, "Admin@1234");
+                var admin = new IdentityUser { UserName = "assignment@dorset.ie", Email = "assignment@dorset.ie", EmailConfirmed = true };
+                await userManager.CreateAsync(admin, "Dorset123!");
                 await userManager.AddToRoleAsync(admin, "Admin");
+            }
+
+            // Seed Inspector user
+            if (await userManager.FindByEmailAsync("inspector@dorset.ie") == null)
+            {
+                var inspector = new IdentityUser { UserName = "inspector@dorset.ie", Email = "inspector@dorset.ie", EmailConfirmed = true };
+                await userManager.CreateAsync(inspector, "Dorset123!");
+                await userManager.AddToRoleAsync(inspector, "Inspector");
+            }
+
+            // Seed Viewer user
+            if (await userManager.FindByEmailAsync("viewer@dorset.ie") == null)
+            {
+                var viewer = new IdentityUser { UserName = "viewer@dorset.ie", Email = "viewer@dorset.ie", EmailConfirmed = true };
+                await userManager.CreateAsync(viewer, "Dorset123!");
+                await userManager.AddToRoleAsync(viewer, "Viewer");
             }
 
             // Seed Inspector user

@@ -1,0 +1,63 @@
+﻿@model FoodSafetyTracker.Web.Models.Premises
+
+@{
+    ViewData["Title"] = "Premises Details";
+}
+
+<h2>@Model.Name</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">@Model.Address</dd>
+            <dt class="col-sm-3">Town</dt>
+            <dd class="col-sm-9">@Model.Town</dd>
+            <dt class="col-sm-3">Risk Rating</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.RiskRating == FoodSafetyTracker.Web.Models.RiskRating.High ? "bg-danger" : Model.RiskRating == FoodSafetyTracker.Web.Models.RiskRating.Medium ? "bg-warning" : "bg-success")">
+                    @Model.RiskRating
+                </span>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<h4>Inspections</h4>
+@if (Model.Inspections.Any())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Score</th>
+                <th>Outcome</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var inspection in Model.Inspections.OrderByDescending(i => i.InspectionDate))
+            {
+                <tr>
+                    <td>@inspection.InspectionDate.ToShortDateString()</td>
+                    <td>@inspection.Score</td>
+                    <td>
+                        <span class="badge @(inspection.Outcome == FoodSafetyTracker.Web.Models.Outcome.Pass ? "bg-success" : "bg-danger")">
+                            @inspection.Outcome
+                        </span>
+                    </td>
+                    <td>@inspection.Notes</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No inspections recorded yet.</p>
+}
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

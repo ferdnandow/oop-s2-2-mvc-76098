@@ -1,0 +1,65 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2>📊 Dashboard</h2>
+
+<form method="get" asp-action="Index" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <label class="form-label">Filter by Town</label>
+        <select name="town" class="form-select">
+            <option value="">-- All Towns --</option>
+            @foreach (var town in ViewBag.Towns)
+            {
+                <option value="@town.Text" selected="@(ViewBag.SelectedTown == town.Text)">@town.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label class="form-label">Filter by Risk Rating</label>
+        <select name="riskRating" class="form-select">
+            <option value="">-- All Risk Ratings --</option>
+            @foreach (var rating in Html.GetEnumSelectList<FoodSafetyTracker.Web.Models.RiskRating>())
+            {
+                <option value="@rating.Value" selected="@(ViewBag.SelectedRiskRating != null && ViewBag.SelectedRiskRating.ToString() == rating.Text)">@rating.Text</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary me-2">Apply Filters</button>
+        <a asp-action="Index" class="btn btn-secondary">Clear</a>
+    </div>
+</form>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">Inspections This Month</div>
+            <div class="card-body">
+                <h1 class="card-title display-4">@ViewBag.InspectionsThisMonth</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-header">Failed Inspections This Month</div>
+            <div class="card-body">
+                <h1 class="card-title display-4">@ViewBag.FailedInspectionsThisMonth</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-header">Overdue Follow-Ups</div>
+            <div class="card-body">
+                <h1 class="card-title display-4">@ViewBag.OverdueFollowUps</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Premises" asp-action="Index" class="btn btn-outline-primary me-2">View Premises</a>
+    <a asp-controller="Inspection" asp-action="Index" class="btn btn-outline-primary me-2">View Inspections</a>
+    <a asp-controller="FollowUp" asp-action="Index" class="btn btn-outline-primary">View Follow-Ups</a>
+</div>

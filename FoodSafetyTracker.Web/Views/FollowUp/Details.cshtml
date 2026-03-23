@@ -1,0 +1,37 @@
+﻿@model FoodSafetyTracker.Web.Models.FollowUp
+
+@{
+    ViewData["Title"] = "Follow-Up Details";
+}
+
+<h2>Follow-Up Details</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Premises</dt>
+            <dd class="col-sm-9">@Model.Inspection.Premises.Name</dd>
+            <dt class="col-sm-3">Inspection Date</dt>
+            <dd class="col-sm-9">@Model.Inspection.InspectionDate.ToShortDateString()</dd>
+            <dt class="col-sm-3">Due Date</dt>
+            <dd class="col-sm-9">@Model.DueDate.ToShortDateString()</dd>
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.Status == FoodSafetyTracker.Web.Models.FollowUpStatus.Open ? "bg-warning" : "bg-success")">
+                    @Model.Status
+                </span>
+            </dd>
+            <dt class="col-sm-3">Closed Date</dt>
+            <dd class="col-sm-9">@(Model.ClosedDate.HasValue ? Model.ClosedDate.Value.ToShortDateString() : "-")</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-3">
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

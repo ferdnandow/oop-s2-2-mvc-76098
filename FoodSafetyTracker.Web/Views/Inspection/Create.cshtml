@@ -1,0 +1,52 @@
+﻿@model FoodSafetyTracker.Web.Models.Inspection
+
+@{
+    ViewData["Title"] = "Create Inspection";
+}
+
+<h2>Create Inspection</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="PremisesId" class="form-label">Premises</label>
+                <select asp-for="PremisesId" class="form-select" asp-items="ViewBag.PremisesId">
+                    <option value="">-- Select Premises --</option>
+                </select>
+                <span asp-validation-for="PremisesId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="InspectionDate" class="form-label"></label>
+                <input asp-for="InspectionDate" class="form-control" type="date" />
+                <span asp-validation-for="InspectionDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Score" class="form-label">Score (0-100)</label>
+                <input asp-for="Score" class="form-control" type="number" min="0" max="100" />
+                <span asp-validation-for="Score" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Outcome" class="form-label"></label>
+                <select asp-for="Outcome" class="form-select"
+                        asp-items="Html.GetEnumSelectList<FoodSafetyTracker.Web.Models.Outcome>()">
+                </select>
+                <span asp-validation-for="Outcome" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Notes" class="form-label"></label>
+                <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Notes" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

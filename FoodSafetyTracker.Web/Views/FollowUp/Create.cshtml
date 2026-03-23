@@ -1,0 +1,46 @@
+﻿@model FoodSafetyTracker.Web.Models.FollowUp
+
+@{
+    ViewData["Title"] = "Create Follow-Up";
+}
+
+<h2>Create Follow-Up</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="InspectionId" class="form-label">Inspection</label>
+                <select asp-for="InspectionId" class="form-select" asp-items="ViewBag.InspectionId">
+                    <option value="">-- Select Inspection --</option>
+                </select>
+                <span asp-validation-for="InspectionId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DueDate" class="form-label"></label>
+                <input asp-for="DueDate" class="form-control" type="date" />
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" class="form-select"
+                        asp-items="Html.GetEnumSelectList<FoodSafetyTracker.Web.Models.FollowUpStatus>()">
+                </select>
+                <span asp-validation-for="Status" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ClosedDate" class="form-label"></label>
+                <input asp-for="ClosedDate" class="form-control" type="date" />
+                <span asp-validation-for="ClosedDate" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
