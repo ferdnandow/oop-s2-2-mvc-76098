@@ -81,6 +81,14 @@ namespace FoodSafetyTracker.Web.Controllers
             _logger.LogInformation("Dashboard stats: InspectionsThisMonth={Count1}, Failed={Count2}, OverdueFollowUps={Count3}",
                 inspectionsThisMonth, failedInspectionsThisMonth, overdueFollowUps);
 
+            var recentInspections = await _context.Inspections
+            .Include(i => i.Premises)
+            .OrderByDescending(i => i.InspectionDate)
+            .Take(5)
+            .ToListAsync();
+
+            ViewBag.RecentInspections = recentInspections;
+
             return View();
         }
     }
