@@ -67,18 +67,18 @@ namespace FoodSafetyTracker.Web.Data
             {
                 var premises = new List<Premises>
                 {
-                    new Premises { Name = "The Cosy Kitchen", Address = "12 Main St", Town = "Cork", RiskRating = RiskRating.Low },
-                    new Premises { Name = "Burger Barn", Address = "45 High St", Town = "Cork", RiskRating = RiskRating.Medium },
-                    new Premises { Name = "Pizza Palace", Address = "78 Church Rd", Town = "Cork", RiskRating = RiskRating.High },
-                    new Premises { Name = "The Hungry Fox", Address = "3 Bridge St", Town = "Cork", RiskRating = RiskRating.Low },
-                    new Premises { Name = "Sushi Spot", Address = "22 River Rd", Town = "Dublin", RiskRating = RiskRating.Medium },
-                    new Premises { Name = "The Noodle House", Address = "67 Grafton St", Town = "Dublin", RiskRating = RiskRating.High },
-                    new Premises { Name = "Green Leaf Cafe", Address = "10 Baggot St", Town = "Dublin", RiskRating = RiskRating.Low },
-                    new Premises { Name = "The Spice Garden", Address = "5 Camden St", Town = "Dublin", RiskRating = RiskRating.Medium },
-                    new Premises { Name = "Ocean Breeze", Address = "1 Strand Rd", Town = "Galway", RiskRating = RiskRating.Low },
-                    new Premises { Name = "The Fisherman", Address = "9 Dock St", Town = "Galway", RiskRating = RiskRating.High },
-                    new Premises { Name = "West Coast Diner", Address = "33 Shop St", Town = "Galway", RiskRating = RiskRating.Medium },
-                    new Premises { Name = "The Atlantic Grill", Address = "14 Sea Rd", Town = "Galway", RiskRating = RiskRating.Low },
+                    new Premises { Name = "Glouton", Address = "R. Bárbara Heliodora, 71 – Lourdes", Town = "Belo Horizonte", RiskRating = RiskRating.Low },
+                    new Premises { Name = "Ninita", Address = "R. Bárbara Heliodora, 71 – Lourdes", Town = "Belo Horizonte", RiskRating = RiskRating.Medium },
+                    new Premises { Name = "Domenico Pizzeria e Trattoria", Address = "R. Cláudio Manoel, 583 – Savassi", Town = "Belo Horizonte", RiskRating = RiskRating.High },
+                    new Premises { Name = "Xapuri", Address = "Rua Mandacarú, 260 – Trevo", Town = "Belo Horizonte", RiskRating = RiskRating.Low },
+                    new Premises { Name = "La Macelleria Vila da Serra", Address = "Alameda Oscar Niemeyer, 1033 – Vila da Serra", Town = "Nova Lima", RiskRating = RiskRating.Medium },
+                    new Premises { Name = "Topo do Mundo Restaurante", Address = "Torre Alta Vila – Vale do Sereno", Town = "Nova Lima", RiskRating = RiskRating.High },
+                    new Premises { Name = "Dorival Bar e Parrilla", Address = "Alameda Oscar Niemeyer, 841 – Vila da Serra", Town = "Nova Lima", RiskRating = RiskRating.Low },
+                    new Premises { Name = "Hacienda 1979", Address = "R. Atlas, 464 – Vale do Sol", Town = "Nova Lima", RiskRating = RiskRating.Medium },
+                    new Premises { Name = "Coco Bambu ItaúPower", Address = "Av. General David Sarnoff, 5160 – Cidade Industrial", Town = "Contagem", RiskRating = RiskRating.High },
+                    new Premises { Name = "Empório Fonte Grande", Address = "Bairro Cabral", Town = "Contagem", RiskRating = RiskRating.Low },
+                    new Premises { Name = "Restaurante Tamboril", Address = "Instituto Inhotim", Town = "Brumadinho", RiskRating = RiskRating.Medium },
+                    new Premises { Name = "A Mi Manera Bistrô", Address = "Centro", Town = "Brumadinho", RiskRating = RiskRating.High },
                 };
                 context.Premises.AddRange(premises);
                 await context.SaveChangesAsync();
