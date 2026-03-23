@@ -58,6 +58,7 @@ try
         app.UseHsts();
     }
 
+    app.UseMiddleware<FoodSafetyTracker.Web.Middleware.ExceptionHandlingMiddleware>();
     app.UseHttpsRedirection();
     app.UseSerilogRequestLogging(); // Log all HTTP requests
     app.UseRouting();
