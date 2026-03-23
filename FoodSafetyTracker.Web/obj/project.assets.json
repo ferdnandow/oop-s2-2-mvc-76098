@@ -971,6 +971,18 @@
           "Microsoft.AspNetCore.App"
         ]
       },
+      "Serilog.Enrichers.AspNetCore/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Serilog": "2.6.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Serilog.Enrichers.AspNetCore.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Serilog.Enrichers.AspNetCore.dll": {}
+        }
+      },
       "Serilog.Enrichers.Environment/3.0.1": {
         "type": "package",
         "dependencies": {
@@ -3455,6 +3467,18 @@
         "serilog.aspnetcore.nuspec"
       ]
     },
+    "Serilog.Enrichers.AspNetCore/1.0.0": {
+      "sha512": "s1MTjjHxDPrSxUCKE5WvVaKlYEsT52z9sK94u1V5RqJpNncWzaa8ypg2zNyF/qsI5tn5qP4q0MUQsf6eyvkcYg==",
+      "type": "package",
+      "path": "serilog.enrichers.aspnetcore/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Serilog.Enrichers.AspNetCore.dll",
+        "serilog.enrichers.aspnetcore.1.0.0.nupkg.sha512",
+        "serilog.enrichers.aspnetcore.nuspec"
+      ]
+    },
     "Serilog.Enrichers.Environment/3.0.1": {
       "sha512": "9BqCE4C9FF+/rJb/CsQwe7oVf44xqkOvMwX//CUxvUR25lFL4tSS6iuxE5eW07quby1BAyAEP+vM6TWsnT3iqw==",
       "type": "package",
@@ -4125,6 +4149,7 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 10.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 10.0.4",
       "Serilog.AspNetCore >= 10.0.0",
+      "Serilog.Enrichers.AspNetCore >= 1.0.0",
       "Serilog.Enrichers.Environment >= 3.0.1",
       "Serilog.Enrichers.Thread >= 4.0.0",
       "Serilog.Sinks.File >= 7.0.0"
@@ -4209,6 +4234,10 @@
           "Serilog.AspNetCore": {
             "target": "Package",
             "version": "[10.0.0, )"
+          },
+          "Serilog.Enrichers.AspNetCore": {
+            "target": "Package",
+            "version": "[1.0.0, )"
           },
           "Serilog.Enrichers.Environment": {
             "target": "Package",
