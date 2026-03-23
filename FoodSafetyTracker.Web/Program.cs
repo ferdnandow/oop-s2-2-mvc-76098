@@ -24,6 +24,8 @@ try
         .Enrich.FromLogContext()
         .Enrich.WithProperty("Application", "FoodSafetyTracker")
         .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
+        .Enrich.WithThreadId()
+        .Enrich.WithMachineName()
         .WriteTo.Console()
         .WriteTo.File(
             path: "logs/food-safety-.log",
@@ -59,7 +61,7 @@ try
     }
 
     app.UseMiddleware<FoodSafetyTracker.Web.Middleware.ExceptionHandlingMiddleware>();
-    app.UseHttpsRedirection();
+    .Enrich.WithProperty("Application", "FoodSafetyTracker")
     app.UseSerilogRequestLogging(); // Log all HTTP requests
     app.UseRouting();
 
