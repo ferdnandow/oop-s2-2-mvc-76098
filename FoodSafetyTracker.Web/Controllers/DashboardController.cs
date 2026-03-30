@@ -89,6 +89,29 @@ namespace FoodSafetyTracker.Web.Controllers
 
             ViewBag.RecentInspections = recentInspections;
 
+            // Chart data - Pass vs Fail per month (last 6 months)
+            var sixMonthsAgo = DateTime.Now.AddMonths(-6);
+            var chartData = await _context.Inspections
+                .Where(i => i.InspectionDate >= sixMonthsAgo)
+                .GroupBy(i => new { i.InspectionDate.Year, i.InspectionDate.Month, i.Outcome })
+                .Select(g => new { g.Key.Year, g.Key.Month, g.Key.Outcome, Count = g.Count() })
+                .ToListAsync();
+
+            var chartLabels = chartData
+                .Select(d => $"{d.Year}-{d.Month:D2}")
+                .Distinct()
+                .OrderBy(d => d)
+                .ToList();
+
+            ViewBag.ChartLabels = chartLabels;
+            ViewBag.PassData = chartLabels.Select(l => chartData
+                .Where(d => $"{d.Year}-{d.Month:D2}" == l && d.Outcome == Outcome.Pass)
+                .Sum(d => d.Count)).ToList();
+            ViewBag.FailData = chartLabels.Select(l => chartData
+                .Where(d => $"{d.Year}-{d.Month:D2}" == l && d.Outcome == Outcome.Fail)
+                .Sum(d => d.Count)).ToList();
+
+
             return View();
         }
     }
