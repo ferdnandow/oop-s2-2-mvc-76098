@@ -61,6 +61,23 @@ namespace FoodSafetyTracker.Web.Controllers
                 await _context.SaveChangesAsync();
                 _logger.LogInformation("Inspection created for PremisesId {PremisesId}, InspectionId {InspectionId} by {User}",
                     inspection.PremisesId, inspection.Id, User.Identity!.Name);
+
+                // Auto-create follow-up if score is below 50
+                if (inspection.Score < 50)
+                {
+                    var followUp = new FollowUp
+                    {
+                        InspectionId = inspection.Id,
+                        DueDate = DateTime.Now.AddDays(7),
+                        Status = FollowUpStatus.Open
+                    };
+                    _context.Add(followUp);
+                    await _context.SaveChangesAsync();
+                    _logger.LogWarning("Auto follow-up created for InspectionId {InspectionId} due to low score {Score}", inspection.Id, inspection.Score);
+
+                    TempData["AutoFollowUp"] = $"⚠️ Score below 50! A follow-up has been automatically created with a due date of {followUp.DueDate.ToShortDateString()}.";
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PremisesId"] = new SelectList(_context.Premises, "Id", "Name", inspection.PremisesId);
