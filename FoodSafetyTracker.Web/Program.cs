@@ -17,7 +17,7 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
-    // Configure Serilog
+    // Configure Serilog with 2 sinks: Console and File
     builder.Host.UseSerilog((context, services, configuration) => configuration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
@@ -58,9 +58,10 @@ try
     {
         app.UseExceptionHandler("/Home/Error");
         app.UseHsts();
+        app.UseHsts();
     }
 
-    app.UseMiddleware<FoodSafetyTracker.Web.Middleware.ExceptionHandlingMiddleware>();
+
     app.UseSerilogRequestLogging(); // Log all HTTP requests
     app.UseRouting();
 

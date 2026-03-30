@@ -39,11 +39,7 @@ namespace FoodSafetyTracker.Web.Controllers
                 .ThenInclude(i => i.Premises)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (followUp == null)
-            {
-                _logger.LogWarning("FollowUp with id {Id} not found", id);
-                return NotFound();
-            }
+            if (followUp == null) return NotFound();
 
             return View(followUp);
         }
@@ -51,7 +47,10 @@ namespace FoodSafetyTracker.Web.Controllers
         [Authorize(Roles = "Admin,Inspector")]
         public IActionResult Create()
         {
-            ViewData["InspectionId"] = new SelectList(_context.Inspections, "Id", "Id");
+            ViewData["InspectionId"] = new SelectList(
+                _context.Inspections.Include(i => i.Premises)
+                    .Select(i => new { i.Id, Display = i.Premises.Name + " - " + i.InspectionDate.ToShortDateString() }),
+                "Id", "Display");
             return View();
         }
 
@@ -69,7 +68,7 @@ namespace FoodSafetyTracker.Web.Controllers
             var inspection = await _context.Inspections.FindAsync(followUp.InspectionId);
             if (inspection != null && followUp.DueDate < inspection.InspectionDate)
             {
-                _logger.LogWarning("FollowUp creation failed: DueDate {DueDate} is before InspectionDate {InspectionDate}", followUp.DueDate, inspection.InspectionDate);
+                _logger.LogWarning("FollowUp creation failed: DueDate before InspectionDate for InspectionId {InspectionId}", followUp.InspectionId);
                 ModelState.AddModelError("DueDate", "DueDate cannot be before the Inspection date.");
             }
 
@@ -77,15 +76,18 @@ namespace FoodSafetyTracker.Web.Controllers
             {
                 _context.Add(followUp);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("FollowUp created for InspectionId {InspectionId}, Id {Id} by {User}", followUp.InspectionId, followUp.Id, User.Identity!.Name);
+                _logger.LogInformation("FollowUp created for InspectionId {InspectionId} by {User}", followUp.InspectionId, User.Identity!.Name);
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["InspectionId"] = new SelectList(_context.Inspections, "Id", "Id", followUp.InspectionId);
+            ViewData["InspectionId"] = new SelectList(
+                _context.Inspections.Include(i => i.Premises)
+                    .Select(i => new { i.Id, Display = i.Premises.Name + " - " + i.InspectionDate.ToShortDateString() }),
+                "Id", "Display", followUp.InspectionId);
             return View(followUp);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Inspector")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -93,13 +95,16 @@ namespace FoodSafetyTracker.Web.Controllers
             var followUp = await _context.FollowUps.FindAsync(id);
             if (followUp == null) return NotFound();
 
-            ViewData["InspectionId"] = new SelectList(_context.Inspections, "Id", "Id", followUp.InspectionId);
+            ViewData["InspectionId"] = new SelectList(
+                _context.Inspections.Include(i => i.Premises)
+                    .Select(i => new { i.Id, Display = i.Premises.Name + " - " + i.InspectionDate.ToShortDateString() }),
+                "Id", "Display", followUp.InspectionId);
             return View(followUp);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Inspector")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,InspectionId,DueDate,Status,ClosedDate")] FollowUp followUp)
         {
             if (id != followUp.Id) return NotFound();
@@ -116,7 +121,7 @@ namespace FoodSafetyTracker.Web.Controllers
                 {
                     _context.Update(followUp);
                     await _context.SaveChangesAsync();
-                    _logger.LogInformation("FollowUp updated: {Id} Status {Status} by {User}", followUp.Id, followUp.Status, User.Identity!.Name);
+                    _logger.LogInformation("FollowUp updated: {Id} by {User}", followUp.Id, User.Identity!.Name);
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -127,7 +132,10 @@ namespace FoodSafetyTracker.Web.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["InspectionId"] = new SelectList(_context.Inspections, "Id", "Id", followUp.InspectionId);
+            ViewData["InspectionId"] = new SelectList(
+                _context.Inspections.Include(i => i.Premises)
+                    .Select(i => new { i.Id, Display = i.Premises.Name + " - " + i.InspectionDate.ToShortDateString() }),
+                "Id", "Display", followUp.InspectionId);
             return View(followUp);
         }
 
@@ -138,6 +146,7 @@ namespace FoodSafetyTracker.Web.Controllers
 
             var followUp = await _context.FollowUps
                 .Include(f => f.Inspection)
+                .ThenInclude(i => i.Premises)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (followUp == null) return NotFound();

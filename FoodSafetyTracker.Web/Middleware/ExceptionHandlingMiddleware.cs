@@ -25,7 +25,12 @@ namespace FoodSafetyTracker.Web.Middleware
                     context.Request.Path,
                     context.User.Identity?.Name ?? "Anonymous");
 
-                context.Response.Redirect("/Home/Error");
+                if (!context.Response.HasStarted)
+                {
+                    context.Response.Clear();
+                    context.Response.StatusCode = 500;
+                    context.Response.Redirect("/Home/Error");
+                }
             }
         }
     }

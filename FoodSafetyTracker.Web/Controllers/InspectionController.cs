@@ -19,7 +19,6 @@ namespace FoodSafetyTracker.Web.Controllers
             _logger = logger;
         }
 
-        // GET: Inspection
         public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Inspection list accessed by {User}", User.Identity!.Name);
@@ -30,7 +29,6 @@ namespace FoodSafetyTracker.Web.Controllers
             return View(inspections);
         }
 
-        // GET: Inspection/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -40,16 +38,11 @@ namespace FoodSafetyTracker.Web.Controllers
                 .Include(i => i.FollowUps)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (inspection == null)
-            {
-                _logger.LogWarning("Inspection with id {Id} not found", id);
-                return NotFound();
-            }
+            if (inspection == null) return NotFound();
 
             return View(inspection);
         }
 
-        // GET: Inspection/Create
         [Authorize(Roles = "Admin,Inspector")]
         public IActionResult Create()
         {
@@ -57,7 +50,6 @@ namespace FoodSafetyTracker.Web.Controllers
             return View();
         }
 
-        // POST: Inspection/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Inspector")]
@@ -67,16 +59,15 @@ namespace FoodSafetyTracker.Web.Controllers
             {
                 _context.Add(inspection);
                 await _context.SaveChangesAsync();
-                _logger.LogInformation("Inspection created for PremisesId {PremisesId}, InspectionId {InspectionId}, Outcome {Outcome} by {User}",
-                    inspection.PremisesId, inspection.Id, inspection.Outcome, User.Identity!.Name);
+                _logger.LogInformation("Inspection created for PremisesId {PremisesId}, InspectionId {InspectionId} by {User}",
+                    inspection.PremisesId, inspection.Id, User.Identity!.Name);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PremisesId"] = new SelectList(_context.Premises, "Id", "Name", inspection.PremisesId);
             return View(inspection);
         }
 
-        // GET: Inspection/Edit/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Inspector")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -88,10 +79,9 @@ namespace FoodSafetyTracker.Web.Controllers
             return View(inspection);
         }
 
-        // POST: Inspection/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Inspector")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,PremisesId,InspectionDate,Score,Outcome,Notes")] Inspection inspection)
         {
             if (id != inspection.Id) return NotFound();
@@ -116,7 +106,6 @@ namespace FoodSafetyTracker.Web.Controllers
             return View(inspection);
         }
 
-        // GET: Inspection/Delete/5
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -131,7 +120,6 @@ namespace FoodSafetyTracker.Web.Controllers
             return View(inspection);
         }
 
-        // POST: Inspection/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -145,7 +133,7 @@ namespace FoodSafetyTracker.Web.Controllers
                 _logger.LogInformation("Inspection deleted: {Id} by {User}", id, User.Identity!.Name);
             }
             return RedirectToAction(nameof(Index));
-        }   
+        }
 
         private bool InspectionExists(int id)
         {

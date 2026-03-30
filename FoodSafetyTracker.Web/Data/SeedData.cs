@@ -67,7 +67,7 @@ namespace FoodSafetyTracker.Web.Data
             {
                 var premises = new List<Premises>
                 {
-                    new Premises { Name = "Glouton", Address = "R. Bárbara Heliodora, 71 – Lourdes", Town = "Belo Horizonte", RiskRating = RiskRating.Low },
+                    new Premises { Name = "Glouton", Address = "R. Bárbara Heliodora, 69 – Lourdes", Town = "Belo Horizonte", RiskRating = RiskRating.Low },
                     new Premises { Name = "Ninita", Address = "R. Bárbara Heliodora, 71 – Lourdes", Town = "Belo Horizonte", RiskRating = RiskRating.Medium },
                     new Premises { Name = "Domenico Pizzeria e Trattoria", Address = "R. Cláudio Manoel, 583 – Savassi", Town = "Belo Horizonte", RiskRating = RiskRating.High },
                     new Premises { Name = "Xapuri", Address = "Rua Mandacarú, 260 – Trevo", Town = "Belo Horizonte", RiskRating = RiskRating.Low },
