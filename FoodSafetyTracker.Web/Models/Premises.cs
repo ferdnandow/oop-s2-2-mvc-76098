@@ -1,4 +1,6 @@
-﻿namespace FoodSafetyTracker.Web.Models
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+
+namespace FoodSafetyTracker.Web.Models
 {
     public enum RiskRating { Low, Medium, High }
 
@@ -10,6 +12,7 @@
         public string Town { get; set; } = string.Empty;
         public RiskRating RiskRating { get; set; }
 
+        [ValidateNever]
         public ICollection<Inspection> Inspections { get; set; } = new List<Inspection>();
     }
 }

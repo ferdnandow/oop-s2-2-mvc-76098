@@ -25,21 +25,34 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class="@(item.Status == FoodSafetyTracker.Web.Models.FollowUpStatus.Open && item.DueDate < DateTime.Now ? "table-danger" : "")">
+            var isOverdue = item.Status == FoodSafetyTracker.Web.Models.FollowUpStatus.Open && item.DueDate < DateTime.Now;
+            <tr class="@(isOverdue ? "table-danger" : "")">
                 <td>@item.Inspection.Premises.Name</td>
                 <td>@item.Inspection.InspectionDate.ToShortDateString()</td>
                 <td>@item.DueDate.ToShortDateString()</td>
                 <td>
-                    <span class="badge @(item.Status == FoodSafetyTracker.Web.Models.FollowUpStatus.Open ? "bg-warning" : "bg-success")">
-                        @item.Status
-                    </span>
+                    @if (isOverdue)
+                    {
+                        <span class="badge bg-danger">⚠️ Overdue</span>
+                    }
+                    else if (item.Status == FoodSafetyTracker.Web.Models.FollowUpStatus.Open)
+                    {
+                        <span class="badge bg-warning">🟡 Open</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">✅ Closed</span>
+                    }
                 </td>
                 <td>@(item.ClosedDate.HasValue ? item.ClosedDate.Value.ToShortDateString() : "-")</td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Inspector"))
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
                     }
                 </td>
