@@ -18,14 +18,27 @@
             <th>Address</th>
             <th>Town</th>
             <th>Risk Rating</th>
+            <th>Last Inspection</th>
             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
+            var lastInspection = item.Inspections.OrderByDescending(i => i.InspectionDate).FirstOrDefault();
+            var consecutiveFails = item.Inspections
+                .OrderByDescending(i => i.InspectionDate)
+                .TakeWhile(i => i.Outcome == FoodSafetyTracker.Web.Models.Outcome.Fail)
+                .Count();
+
             <tr>
-                <td>@item.Name</td>
+                <td>
+                    @item.Name
+                    @if (consecutiveFails >= 2)
+                    {
+                        <span class="badge bg-danger ms-1">⚠️ @consecutiveFails Consecutive Fails!</span>
+                    }
+                </td>
                 <td>@item.Address</td>
                 <td>@item.Town</td>
                 <td>
@@ -34,10 +47,25 @@
                     </span>
                 </td>
                 <td>
+                    @if (lastInspection != null)
+                    {
+                        <span class="badge @(lastInspection.Outcome == FoodSafetyTracker.Web.Models.Outcome.Pass ? "bg-success" : "bg-danger")">
+                            @lastInspection.Outcome — @lastInspection.InspectionDate.ToShortDateString()
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No inspections yet</span>
+                    }
+                </td>
+                <td>
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
-                    @if (User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Inspector"))
                     {
                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
                     }
                 </td>

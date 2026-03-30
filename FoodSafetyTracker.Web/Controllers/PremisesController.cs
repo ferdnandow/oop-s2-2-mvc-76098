@@ -21,7 +21,9 @@ namespace FoodSafetyTracker.Web.Controllers
         public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Premises list accessed by {User}", User.Identity!.Name);
-            return View(await _context.Premises.ToListAsync());
+            return View(await _context.Premises
+                .Include(p => p.Inspections)
+                .ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
